@@ -1,0 +1,31 @@
+---
+
+- name: Create beanstalkd user
+  user:
+    name: '{{ beanstalkd_user }}'
+    createhome: 'no'
+    shell: '/bin/false'
+    system: True
+    state: 'present'
+
+- name: Install beanstalkd
+  apt:
+    name: 'beanstalkd'
+    state: 'present'
+
+- name: Configure beanstalkd
+  template:
+    src: 'etc/default/beanstalkd.j2'
+    dest: '/etc/default/beanstalkd'
+  register: config_updated
+
+- name: Enable beanstalkd
+  service:
+    name: 'beanstalkd'
+    enabled: True
+
+- name: Restart beanstalkd
+  service:
+    name: 'beanstalkd'
+    state: 'restarted'
+  when: config_updated.changed

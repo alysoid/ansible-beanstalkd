@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+# Defaults for the beanstalkd init script, /etc/init.d/beanstalkd on
+# Debian systems.
+
+BEANSTALKD_LISTEN_ADDR={{ beanstalkd_address }}
+BEANSTALKD_LISTEN_PORT={{ beanstalkd_port }}
+DAEMONUSER={{ beanstalkd_user }}
+
+# You can use BEANSTALKD_EXTRA to pass additional options. See beanstalkd(1)
+# for a list of the available options. Uncomment the following line for
+# persistent job storage.
+
+{% if beanstalkd_extra %}
+BEANSTALKD_EXTRA="{{ beanstalkd_extra }}"
+{% endif %}
